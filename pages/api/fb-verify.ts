@@ -15,9 +15,7 @@ export default function handler(
 		return res.status(200).send(challenge);
 	}
 
-	res.json(process.env);
-
-	// res.json({
-	// 	error: 'wrong token'
-	// });
+	res.json({
+		error: 'wrong token'
+	});
 }
