@@ -9,6 +9,7 @@ export default function handler(
 	const challenge = query['hub.challenge'];
 	const token = query['hub.verify_token'];
 
+	console.log(req.method);
 	if (req.method === 'POST') {
 		console.log(req.body);
 		return res.end();
