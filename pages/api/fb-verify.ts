@@ -9,7 +9,10 @@ export default function handler(
 	const challenge = query['hub.challenge'];
 	const token = query['hub.verify_token'];
 
-	console.log(mode, challenge, token);
+	if (req.method === 'POST') {
+		console.log(req.body);
+		return res.end();
+	}
 
 	if (mode === 'subscribe' && token === process.env.FB_VERIFY_TOKEN) {
 		return res.status(200).send(challenge);
