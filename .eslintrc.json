@@ -21,6 +21,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+		"camelcase": "off",
 		"indent": ["error", "tab"],
 		"linebreak-style": "off",
 		"no-tabs": ["error", { "allowIndentationTabs": true }]
