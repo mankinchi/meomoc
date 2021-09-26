@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import util from 'util'
 
 export default function handler(
 	req: NextApiRequest,
@@ -10,8 +11,7 @@ export default function handler(
 	const token = query['hub.verify_token'];
 
 	if (req.method === 'POST') {
-		console.log(req.body);
-		console.log(req.body.entry[0].changes)
+		console.log(util.inspect(req.body, false, null, true))
 		return res.status(200).end();
 	}
 
