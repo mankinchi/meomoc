@@ -20,9 +20,9 @@ interface FacebookWebhookAPI {
 						verb: string,
 					},
 					field: string,
-				}
+				},
 			]
-		}
+		},
 	]
 }
 
@@ -49,8 +49,8 @@ export default async function handler(
 					changes: [
 						{
 							value: {
-								post_id,
-								created_time,
+								post_id: postId,
+								created_time: createdTime,
 							},
 						},
 					],
@@ -63,8 +63,8 @@ export default async function handler(
 			await prisma.$connect();
 			await prisma.post.create({
 				data: {
-					postId: post_id,
-					dateTime: new Date(created_time),
+					postId,
+					dateTime: new Date(createdTime),
 				},
 			});
 		} catch (e) {
