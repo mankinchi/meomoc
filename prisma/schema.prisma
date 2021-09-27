@@ -12,6 +12,7 @@ generator client {
 }
 
 model Post {
-	postId String @id @map("_id") @db.ObjectId
+	id String @id @map("_id") @default(dbgenerated()) @db.ObjectId
+	postId String
 	dateTime DateTime
 }
