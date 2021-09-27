@@ -77,5 +77,5 @@ export default async function handler(
 		return res.status(200).end();
 	}
 
-	return res.status(500);
+	return res.status(500).end();
 }
