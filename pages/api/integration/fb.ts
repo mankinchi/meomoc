@@ -67,6 +67,7 @@ export default async function handler(
 					dateTime: new Date(createdTime),
 				},
 			});
+			console.log('Add new post');
 		} catch (e) {
 			console.error(e);
 		} finally {
