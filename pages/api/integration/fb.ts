@@ -61,12 +61,12 @@ export default async function handler(
 		const prisma = new PrismaClient();
 		try {
 			await prisma.$connect();
-			// await prisma.post.create({
-			// 	data: {
-			// 		postId,
-			// 		dateTime: new Date(createdTime),
-			// 	},
-			// });
+			await prisma.post.create({
+				data: {
+					postId,
+					dateTime: new Date(createdTime),
+				},
+			});
 			console.log('Add new post');
 		} catch (e) {
 			console.error(e);
