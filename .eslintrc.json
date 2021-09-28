@@ -24,6 +24,7 @@
     ],
     "rules": {
 		"camelcase": "off",
+		"no-console": ["error", { "allow": ["info", "error"] }],
 		"@typescript-eslint/indent": ["error", "tab"],
 		"linebreak-style": "off",
 		"no-tabs": ["error", { "allowIndentationTabs": true }],
