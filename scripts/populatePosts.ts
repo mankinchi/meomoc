@@ -1,9 +1,9 @@
 // This script is meant to populate old posts before webhooks are installed
 // Should only need to run once
-import axios from 'axios';
 /* eslint-disable-next-line */
 import { PrismaClient } from '.prisma/client/index.js';
 import 'dotenv/config';
+import { requestFBGraphAPI } from '../utils/integration/fb';
 
 interface FacebookAPIGetPagePosts {
 	posts: {
@@ -16,21 +16,16 @@ interface FacebookAPIGetPagePosts {
 }
 
 const main = async (): Promise<void> => {
-	const prisma = new PrismaClient({
-		log: ['query', 'info', 'warn', 'error'],
-	});
+	const prisma = new PrismaClient();
 
 	try {
 		await prisma.$connect();
 
-		const url = `https://graph.facebook.com/v12.0/${process.env.PAGE_ID}?fields=posts&access_token=${process.env.PAGE_ACCESS_TOKEN}`;
 		const {
-			data: {
-				posts: {
-					data,
-				},
+			posts: {
+				data,
 			},
-		} = await axios.get<FacebookAPIGetPagePosts>(url);
+		} = await requestFBGraphAPI<FacebookAPIGetPagePosts>(`${process.env.PAGE_ID}?fields=posts`);
 
 		const existingPosts = await prisma.post.findMany();
 		const existingPostsIds = existingPosts.map(({ postId }) => postId);
