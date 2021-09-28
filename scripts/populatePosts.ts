@@ -1,8 +1,8 @@
 // This script is meant to populate old posts before webhooks are installed
 // Should only need to run once
 /* eslint-disable-next-line */
-import { PrismaClient } from '.prisma/client/index.js';
 import 'dotenv/config';
+import { prisma } from '../utils/db';
 import { requestFBGraphAPI } from '../utils/integration/fb';
 
 interface FacebookAPIGetPagePosts {
@@ -16,8 +16,6 @@ interface FacebookAPIGetPagePosts {
 }
 
 const main = async (): Promise<void> => {
-	const prisma = new PrismaClient();
-
 	try {
 		await prisma.$connect();
 

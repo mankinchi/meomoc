@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../../utils/db';
 
 interface FacebookWebhookAPI {
 	object: string,
@@ -58,7 +58,6 @@ export default async function handler(
 			],
 		} = req.body as FacebookWebhookAPI;
 
-		const prisma = new PrismaClient();
 		try {
 			await prisma.$connect();
 			await prisma.post.create({
