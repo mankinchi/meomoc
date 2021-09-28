@@ -27,6 +27,7 @@
 		"no-console": ["error", { "allow": ["info", "error"] }],
 		"@typescript-eslint/indent": ["error", "tab"],
 		"linebreak-style": "off",
+		"import/prefer-default-export": "off",
 		"no-tabs": ["error", { "allowIndentationTabs": true }],
 		"react/jsx-filename-extension": "off",
 		"react/jsx-indent-props": "off",
