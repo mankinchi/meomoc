@@ -2,14 +2,13 @@
 	"name": "meomoc",
 	"version": "0.1.0",
 	"private": true,
-	"type": "module",
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
 		"postinstall": "prisma generate",
-		"populate:post": "node --loader ts-node/esm ./scripts/populatePosts.ts"
+		"populate:post": "ts-node ./scripts/populatePosts"
 	},
 	"dependencies": {
 		"@prisma/client": "^3.1.1",
