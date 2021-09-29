@@ -27,6 +27,7 @@
 		"no-console": ["error", { "allow": ["info", "error"] }],
 		"@typescript-eslint/indent": ["error", "tab"],
 		"@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_", "args": "none" }],
+		"@typescript-eslint/no-use-before-define": "off",
 		"linebreak-style": "off",
 		"import/prefer-default-export": "off",
 		"no-tabs": ["error", { "allowIndentationTabs": true }],
