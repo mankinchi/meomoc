@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import type { GetServerSideProps, NextPage } from 'next';
 import axios from 'axios';
-
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
 import absoluteUrl from 'next-absolute-url';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
+
 import { GetPostAPI } from './api/getPost';
 import { Post } from '../types/api/post';
 
@@ -40,6 +42,7 @@ const Home: NextPage<PageProps> = (props: PageProps) => {
 				<title>Create Next App</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
+			<FontAwesomeIcon icon={solid('user-secret')} />
 			{
 				previousPostId && (
 					<Link href={`/?postId=${previousPostId}`}>Previous post</Link>
