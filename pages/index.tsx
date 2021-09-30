@@ -1,33 +1,38 @@
-import React from 'react';
-import type { NextPage } from 'next';
+import React, { useEffect } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
 import axios from 'axios';
 
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
-import useSWR from 'swr';
+import absoluteUrl from 'next-absolute-url';
+import { GetPostAPI } from './api/getPost';
+import { Post } from '../types/api/post';
 
-interface PostData {
-	postId: string;
-	caption: string;
-	link: string;
-	images: {
-		src: string;
-		width: number;
-		height: number;
-	}[];
+interface PageProps {
+	post?: Post;
+	previousPostId?: string;
+	nextPostId?: string;
 }
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+interface RandomPostId {
+	id: string;
+}
 
-const Home: NextPage = () => {
+const Home: NextPage<PageProps> = (props: PageProps) => {
 	const router = useRouter();
+	const {
+		post,
+		previousPostId,
+		nextPostId,
+	} = props;
 
-	let url: string | null = null;
-	if (router.isReady) {
-		url = !router.query.postId ? '/api/getRandomPost' : `/api/getPost?id=${router.query.postId}`;
-	}
-	const { data: post } = useSWR<PostData>(url, fetcher);
+	useEffect(() => {
+		if (post) {
+			router.push(`/?postId=${post.postId}`, undefined, { shallow: true });
+		}
+	}, [post]);
 
 	return (
 		<>
@@ -35,6 +40,16 @@ const Home: NextPage = () => {
 				<title>Create Next App</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
+			{
+				previousPostId && (
+					<Link href={`/?postId=${previousPostId}`}>Previous post</Link>
+				)
+			}
+			{
+				nextPostId && (
+					<Link href={`/?postId=${nextPostId}`}>Next post</Link>
+				)
+			}
 			{
 				post && (
 					<>
@@ -54,6 +69,32 @@ const Home: NextPage = () => {
 			}
 		</>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps<GetPostAPI> = async (ctx) => {
+	const {
+		req,
+		query,
+	} = ctx;
+
+	const { origin } = absoluteUrl(req);
+
+	// reroute to random post
+	if (!query.postId) {
+		const { data } = await axios.get<RandomPostId>(`${origin}/api/getRandomPostId`);
+		return {
+			redirect: {
+				destination: `/?postId=${data.id}`,
+				permanent: false,
+			},
+		};
+	}
+
+	// get actual post
+	const { data } = await axios.get<GetPostAPI>(`${origin}/api/getPost?postId=${query.postId}`);
+	return {
+		props: data,
+	};
 };
 
 export default Home;
