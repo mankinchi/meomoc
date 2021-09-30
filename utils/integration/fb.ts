@@ -14,7 +14,7 @@ export const requestFBGraphAPI = async <T>(path: string): Promise<T> => {
 };
 
 export const getPostDetailFromFB = async (id: string, postId: string): Promise<Post> => {
-	const fbPost = await requestFBGraphAPI<FacebookAPIGetPostDetails>(`/${postId}?fields=attachments`);
+	const fbPost = await requestFBGraphAPI<FacebookAPIGetPostDetails>(`/${postId}?fields=attachments,message`);
 
 	return transformFacebookPost(id, fbPost);
 };
@@ -24,11 +24,12 @@ const transformFacebookPost = (postId: string, post: FacebookAPIGetPostDetails):
 		attachments: {
 			data: [data],
 		},
+		message,
 	} = post;
 
 	return {
 		postId,
-		caption: data.title || data.description || '',
+		caption: message,
 		link: data.url,
 		images: data.type === FacebookPostType.PHOTO
 			? [data.media.image]

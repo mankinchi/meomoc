@@ -18,11 +18,10 @@ export interface FacebookAPIGetPostDetails {
 						},
 					]
 				},
-				description?:string;
-				title?: string;
 				type: FacebookPostType;
 				url: string;
 			},
-		]
-	}
+		],
+	},
+	message: string;
 }
