@@ -4,5 +4,5 @@ declare module '@fortawesome/fontawesome-svg-core/import.macro' {
 	export function light(iconName: IconName): IconProp;
 	export function thin(iconName: IconName): IconProp;
 	export function duotone(iconName: IconName): IconProp;
-	export function brand(iconName: IconName): IconProp;
+	export function brands(iconName: IconName): IconProp;
 }
