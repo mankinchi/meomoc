@@ -9,7 +9,7 @@ interface FacebookAPIGetPagePosts {
 	posts: {
 		data: {
 			created_time: string;
-			message: string;
+			full_picture: string;
 			id: string;
 		}[];
 	};
@@ -23,15 +23,17 @@ const main = async (): Promise<void> => {
 			posts: {
 				data,
 			},
-		} = await requestFBGraphAPI<FacebookAPIGetPagePosts>(`${process.env.PAGE_ID}?fields=posts`);
+		} = await requestFBGraphAPI<FacebookAPIGetPagePosts>(`${process.env.PAGE_ID}?fields=posts{full_picture,created_time,id}`);
 
 		const existingPosts = await prisma.post.findMany();
 		const existingPostsIds = existingPosts.map(({ postId }) => postId);
 
-		const postsNotInDB = data.filter(({ id }) => !existingPostsIds.includes(id));
-		if (postsNotInDB.length !== 0) {
+		const postToAdd = data
+			.filter(({ full_picture }) => full_picture !== undefined)
+			.filter(({ id }) => !existingPostsIds.includes(id));
+		if (postToAdd.length !== 0) {
 			await prisma.post.createMany({
-				data: postsNotInDB.map((post) => ({
+				data: postToAdd.map((post) => ({
 					postId: post.id,
 					dateTime: new Date(post.created_time),
 				})),
