@@ -1,0 +1,84 @@
+.container {
+	display: flex;
+	flex-direction: row;
+
+	height: 100%;
+
+	.imagesSliderContainer {
+		padding: 10px;
+
+		background-color: black;
+
+		flex-basis: 70%;
+
+		user-select: none;
+
+		.topSection {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+
+			.imagesSlider {
+				display: flex;
+
+				flex: 1 0 70%;
+
+				overflow: hidden;
+				scrollbar-width: none;
+				scroll-snap-type: x mandatory;
+
+				&::-webkit-scrollbar {
+					display: none;
+				}
+
+				.imageContainer {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+
+					flex: 1 0 100%;
+				}
+			}
+		}
+	}
+
+	.postDetails {
+		flex-grow: 1;
+
+		padding: 10px;
+
+		border: solid black;
+
+		.controlContainer {
+			display: flex;
+			justify-content: space-between;
+
+			.control {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				gap: 5px;
+
+				cursor: pointer;
+			}
+
+			.hidden {
+				visibility: hidden;
+			}
+		}
+
+		.goToFBControl {
+			margin: 10px 0;
+
+			text-align: right;
+
+			color: black;
+		}
+
+		.captionContainer {
+
+		}
+	}
+}
