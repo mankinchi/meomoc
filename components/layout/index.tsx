@@ -20,15 +20,15 @@ export const Layout = (props: Props): React.ReactElement => {
 						<FontAwesomeIcon
 							icon={regular('paper-plane')}
 							style={{
-								fontSize: '1.3rem',
+								fontSize: '1.2rem',
 							}}
 						/>
 					</a>
 					<a href="https://sg.linkedin.com/in/meo-moc" target="_blank" rel="noreferrer">
-						<FontAwesomeIcon icon={brands('linkedin')} size="xl" />
+						<FontAwesomeIcon icon={brands('linkedin')} size="lg" />
 					</a>
 					<a href="https://www.facebook.com/meomoc.vn" target="_blank" rel="noreferrer">
-						<FontAwesomeIcon icon={brands('facebook-square')} size="xl" />
+						<FontAwesomeIcon icon={brands('facebook-square')} size="lg" />
 					</a>
 				</div>
 			</div>
