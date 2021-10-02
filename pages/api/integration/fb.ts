@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../utils/db';
+import { requestFBGraphAPI } from '../../../utils/integration/fb';
 
 interface FacebookWebhookAPI {
 	object: string,
@@ -15,7 +16,7 @@ interface FacebookWebhookAPI {
 						post_id: string,
 						created_time: number,
 						item: string,
-						photo_id: string,
+						photos?: string[],
 						published: number,
 						verb: string,
 					},
@@ -41,7 +42,6 @@ export default async function handler(
 	}
 
 	// To handle webhook
-	/* eslint-disable */
 	if (req.method === 'POST') {
 		const {
 			entry: [
@@ -51,6 +51,9 @@ export default async function handler(
 							value: {
 								post_id: postId,
 								created_time: createdTime,
+								photos,
+								verb,
+								item,
 							},
 						},
 					],
@@ -58,19 +61,55 @@ export default async function handler(
 			],
 		} = req.body as FacebookWebhookAPI;
 
-		try {
-			await prisma.$connect();
-			await prisma.post.create({
-				data: {
-					postId,
-					dateTime: new Date(createdTime),
-				},
-			});
-			console.log('Add new post');
-		} catch (e) {
-			console.error(e);
-		} finally {
-			await prisma.$disconnect();
+		let newPostId: string | undefined;
+		const dateTime = new Date(createdTime);
+
+		// if add photo or multiple photos (fb treats multiple photos as status post)
+		if (
+			verb === 'add'
+			&& (
+				(
+					item === 'photo'
+				)
+				|| (
+					item === 'status' && photos !== undefined
+				)
+			)
+		) {
+			console.info('changes: add one or many photos');
+			newPostId = postId;
+		}
+
+		// if share a post with images
+		if (verb === 'add' && item === 'share') {
+			const fbPost = await requestFBGraphAPI<{
+				data: any[],
+			}>(`/${postId}/attachments?fields=subattachments`);
+
+			// If share a post without images, the data array here will be empty
+			if (fbPost.data.length !== 0) {
+				console.info('changes: share a post with images');
+				newPostId = postId;
+			}
+		}
+
+		if (newPostId) {
+			try {
+				await prisma.$connect();
+				await prisma.post.create({
+					data: {
+						postId: newPostId,
+						dateTime,
+					},
+				});
+				console.info('Add new post');
+			} catch (e) {
+				console.error(e);
+			} finally {
+				await prisma.$disconnect();
+			}
+		} else {
+			console.info('changes occurs but nothing is added');
 		}
 
 		return res.status(200).end();
