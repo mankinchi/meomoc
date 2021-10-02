@@ -66,6 +66,14 @@ export default async function handler(
 		}
 
 		const fbPost = dbPost ? await getPostDetailFromFB(dbPost.id, dbPost.postId) : undefined;
+		if (fbPost) {
+			// this is to deal with dynamic subdomain
+			// ref: https://github.com/vercel/next.js/discussions/18429
+			fbPost.images = fbPost.images.map((image) => ({
+				...image,
+				src: image.src.replace(/^[^.]*/, 'https://scontent-syd2-1'),
+			}));
+		}
 		res.json({
 			post: fbPost,
 			previousPostId,
