@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../utils/db';
+import { MongoClient } from 'mongodb';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -8,18 +8,28 @@ export default async function handler(
 	}>,
 ) {
 	try {
-		await prisma.$connect();
+		const client = new MongoClient(process.env.DATABASE_URL!);
+		await client.connect();
+		const db = client.db(process.env.DATABASE_NAME);
 
-		const randomPost = await prisma.post.findFirst();
-		if (randomPost) {
+		const aggregation = db.collection('Post').aggregate([
+			{ $sample: { size: 1 } },
+			{ $project: { _id: { $toString: '$_id' } } },
+		]);
+
+		let postId: string | undefined;
+		await aggregation.forEach((document) => {
+			/* eslint-disable-next-line */
+			postId = document._id;
+		});
+
+		if (postId) {
 			res.json({
-				id: randomPost.id,
+				id: postId,
 			});
 		}
 	} catch (e) {
 		console.error(e);
-	} finally {
-		prisma.$disconnect();
 	}
 
 	res.end();
