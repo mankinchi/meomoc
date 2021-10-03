@@ -62,7 +62,8 @@ export default async function handler(
 		} = req.body as FacebookWebhookAPI;
 
 		let newPostId: string | undefined;
-		const dateTime = new Date(createdTime);
+		// createdTime is in seconds instead of millisecond
+		const dateTime = new Date(createdTime * 1000);
 
 		// if add photo or multiple photos (fb treats multiple photos as status post)
 		if (
