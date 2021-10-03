@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import type { GetServerSideProps, NextPage } from 'next';
 import axios from 'axios';
-import Head from 'next/head';
 import { useRouter } from 'next/dist/client/router';
 import absoluteUrl from 'next-absolute-url';
 
@@ -35,21 +34,15 @@ const Home: NextPage<PageProps> = (props: PageProps) => {
 	}, [post]);
 
 	return (
-		<>
-			<Head>
-				<title>Create Next App</title>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-			<div className={styles.readingBoxContainer}>
-				<div>
-					<ReadingBox
-						post={post}
-						nextPostId={nextPostId}
-						previousPostId={previousPostId}
-					/>
-				</div>
+		<div className={styles.readingBoxContainer}>
+			<div>
+				<ReadingBox
+					post={post}
+					nextPostId={nextPostId}
+					previousPostId={previousPostId}
+				/>
 			</div>
-		</>
+		</div>
 	);
 };
 
