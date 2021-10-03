@@ -1,0 +1,9 @@
+.icon {
+	color: white;
+
+	cursor: pointer;
+
+	&.hidden {
+		visibility: hidden;
+	}
+}

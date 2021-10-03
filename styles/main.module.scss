@@ -1,0 +1,13 @@
+.readingBoxContainer{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 100%;
+
+	padding-right: 10px;
+
+	> div {
+		width: 100%;
+	}
+}
