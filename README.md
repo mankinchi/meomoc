@@ -1,5 +1,24 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## About
+I built this in order to learn more about how Next & Vercel works with its serverless feature. You can check read about my experience [`here`](https://www.linkedin.com/pulse/my-first-experience-nextjs-serverless-tri-nguyen)
+
+What this app does is hook into facebook to keep track of changes made to the page. It will then save all the new post id provided by facebook into its own
+database (I used mongodb in this project. But since I use PrismaORM here, you can basically put any database in and it will work).
+
+Stack of choice:
+* FE:
+	* NextJS
+	* FontAwesome Icon
+* BE:
+	* NextJS
+	* PrismaORM
+	* MongoDB
+* Server:
+	* Vercel
+
+You can check the live running demo [`here`](https://meomoc.vercel.app/)
+
 ## Getting Started
 
 First, run the development server:
